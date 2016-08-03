@@ -12,17 +12,21 @@ case os:type() of
         if
             Major >= 13 ->
                 Flags = ["CFLAGS", "CXXFLAGS", "DRV_CFLAGS", "DRV_LDFLAGS"],
-                {port_env, Vals} = lists:keyfind(port_env, 1, CONFIG),
-                Fold = fun({Flag,Val}, Acc) ->
-                               case lists:member(Flag, Flags) of
-                                   true ->
-                                      [{Flag, Val++Opt}|Acc];
-                                   false ->
-                                       Acc
-                               end
-                       end,
-                NewVals = lists:foldl(Fold, [], Vals),
-                lists:keyreplace(port_env, 1, CONFIG, {port_env, NewVals});
+                case lists:keyfind(port_env, 1, CONFIG)of
+                    false ->
+                        CONFIG;
+                    {port_env, Vals} ->
+                        Fold = fun({Flag,Val}, Acc) ->
+                                   case lists:member(Flag, Flags) of
+                                       true ->
+                                           [{Flag, Val++Opt}|Acc];
+                                       false ->
+                                           Acc
+                                   end
+                               end,
+                        NewVals = lists:foldl(Fold, [], Vals),
+                        lists:keyreplace(port_env, 1, CONFIG, {port_env, NewVals})
+                end;
             true ->
                 CONFIG
         end;
