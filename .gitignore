@@ -5,7 +5,7 @@ priv/*
 *.beam
 ebin
 c_src/leveldb/
-c_src/snappy*/
 c_src/system
 *~
 .local_dialyzer_plt
+_build/
