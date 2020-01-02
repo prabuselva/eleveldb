@@ -8,7 +8,8 @@ if [ `uname -s` = 'SunOS' -a "${POSIX_SHELL}" != "true" ]; then
 fi
 unset POSIX_SHELL # clear it so if we invoke other scripts, they run as ksh as well
 
-LEVELDB_VSN="develop"
+# TODO: Should we use/trust "develop" as the most recent maintained version.
+LEVELDB_VSN="2.0.35"
 
 set -e
 
