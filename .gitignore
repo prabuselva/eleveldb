@@ -6,6 +6,7 @@ priv/*
 ebin
 c_src/leveldb/
 c_src/system
+c_src/*.d
 *~
 .local_dialyzer_plt
 _build/
