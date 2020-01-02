@@ -8,9 +8,7 @@ if [ `uname -s` = 'SunOS' -a "${POSIX_SHELL}" != "true" ]; then
 fi
 unset POSIX_SHELL # clear it so if we invoke other scripts, they run as ksh as well
 
-LEVELDB_VSN="2.0.35"
-
-SNAPPY_VSN="1.0.4"
+LEVELDB_VSN="develop"
 
 set -e
 
@@ -32,11 +30,11 @@ MAKE=${MAKE:-make}
 
 case "$1" in
     rm-deps)
-        rm -rf leveldb system snappy-$SNAPPY_VSN
+        rm -rf leveldb system
         ;;
 
     clean)
-        rm -rf system snappy-$SNAPPY_VSN
+        rm -rf system
         if [ -d leveldb ]; then
             (cd leveldb && $MAKE clean)
         fi
@@ -62,26 +60,22 @@ case "$1" in
     *)
         export MACOSX_DEPLOYMENT_TARGET=10.8
 
-        if [ ! -d snappy-$SNAPPY_VSN ]; then
-            tar -xzf snappy-$SNAPPY_VSN.tar.gz
-            (cd snappy-$SNAPPY_VSN && ./configure --prefix=$BASEDIR/system --libdir=$BASEDIR/system/lib --with-pic)
-        fi
-
-        if [ ! -f system/lib/libsnappy.a ]; then
-            (cd snappy-$SNAPPY_VSN && $MAKE -stdlib=libc++ && $MAKE -stdlib=libc++ install)
-        fi
-
         export CFLAGS="$CFLAGS -I $BASEDIR/system/include"
         export CXXFLAGS="$CXXFLAGS -I $BASEDIR/system/include"
         export LDFLAGS="$LDFLAGS -L$BASEDIR/system/lib"
         export LD_LIBRARY_PATH="$BASEDIR/system/lib:$LD_LIBRARY_PATH"
+        export LEVELDB_VSN="$LEVELDB_VSN"
 
         if [ ! -d leveldb ]; then
             git clone git://github.com/basho/leveldb
             (cd leveldb && git checkout $LEVELDB_VSN)
         fi
 
-        (cd leveldb && $MAKE all)
+        # hack issue where high level make is running -j 4
+        #  and causes build errors in leveldb
+        export MAKEFLAGS=
+
+        (cd leveldb && $MAKE -j 3 all)
 
         ;;
 esac
