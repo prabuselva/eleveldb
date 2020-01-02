@@ -1,12 +1,12 @@
 .eunit/*
 deps/*
 priv/*
-*.o
+
 *.beam
 ebin
 c_src/leveldb/
 c_src/system
-c_src/*.d
+c_src/*.[od]
 *~
 .local_dialyzer_plt
 _build/
