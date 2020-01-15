@@ -10,3 +10,4 @@ c_src/*.[od]
 *~
 .local_dialyzer_plt
 _build/
+ltest/

@@ -1,12 +1,21 @@
+os:
+  - linux
+  - osx
+dist: bionic
+osx_image: xcode10.3
 language: erlang
-notifications:
-  webhooks: http://basho-engbot.herokuapp.com/travis?key=a5be8bf3dea048bd7c5c1e93a37da1ab29709f51
-  email: eng@basho.com
 otp_release:
-  - R15B02
-  - R15B01
-  - R15B
-  - R14B04
-  - R14B03
-# - R15B03
+  - 21.3
+  - 22.0
 
+addons:
+  apt:
+    packages:
+      - libsnappy-dev
+  homebrew:
+    packages:
+      - snappy
+
+cache:
+  directories:
+    - $HOME/.cache/rebar3
