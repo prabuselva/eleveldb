@@ -8,6 +8,4 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
     kerl build ${OTP_VERSION}
     kerl install ${OTP_VERSION} ~/kerl/${OTP_VERSION}
     . ${HOME}/kerl/${OTP_VERSION}/activate
-else
-    # Install some custom requirements on Linux
 fi
