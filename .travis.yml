@@ -1,4 +1,5 @@
 language: erlang
+env: PATH=$PATH:.
 addons:
   apt:
     packages:
