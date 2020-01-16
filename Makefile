@@ -17,4 +17,7 @@ compile: deps
 clean:
 	${REBAR} clean
 
+test:
+	${REBAR} eunit
+
 include tools.mk

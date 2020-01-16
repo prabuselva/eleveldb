@@ -1,21 +1,37 @@
-os:
-  - linux
-  - osx
-dist: bionic
-osx_image: xcode10.3
 language: erlang
-otp_release:
-  - 21.3
-  - 22.0
-
 addons:
   apt:
     packages:
       - libsnappy-dev
   homebrew:
+    update: true
     packages:
+      - kerl
       - snappy
-
 cache:
+  brew: true
   directories:
     - $HOME/.cache/rebar3
+    - $HOME/.kerl
+    - $HOME/.kerlrc
+notifications:
+  disabled: true
+jobs:
+  include:
+    - os: linux
+      otp_release: 21.3
+      env: OTP_VERSION=21.3
+    - os: linux
+      otp_release: 22.0
+      env: OTP_VERSION=22.0
+    - os: osx
+      language: generic
+      osx_image: xcode11.3
+      env: OTP_VERSION=21.3
+    - os: osx
+      language: generic
+      osx_image: xcode11.3
+      env: OTP_VERSION=22.0
+install:
+    - ./.travis/install.sh
+script: make test
