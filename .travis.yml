@@ -32,6 +32,11 @@ jobs:
       language: generic
       osx_image: xcode11.3
       env: OTP_VERSION=22.0
-install:
-    - ./.travis/install.sh
+before_install:
+   - if [ $TRAVIS_OS_NAME == osx ] ; then brew install kerl || true ; fi
+   - if [ $TRAVIS_OS_NAME == osx ] ; then kerl update releases ; fi
+   - if [ $TRAVIS_OS_NAME == osx ] ; then travis_wait kerl build ${OTP_VERSION} ${OTP_VERSION} ; fi
+   - if [ $TRAVIS_OS_NAME == osx ] ; then kerl install ${OTP_VERSION} install_${OTP_VERSION} ; fi
+   - if [ $TRAVIS_OS_NAME == osx ] ; then source $(./kerl path install_${OTP_VERSION})/activate ; fi
+
 script: make test

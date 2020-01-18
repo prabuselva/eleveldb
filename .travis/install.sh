@@ -6,7 +6,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
 
     # Install Erlang/OTP
     kerl update releases
-    travis_wait 25 kerl build ${OTP_VERSION} ${OTP_VERSION}
+    kerl build ${OTP_VERSION} ${OTP_VERSION}
     kerl install ${OTP_VERSION} install_${OTP_VERSION}
     source $(./kerl path install_${OTP_VERSION})/activate
 fi
