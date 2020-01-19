@@ -1,15 +1,15 @@
-REBAR_URL=https://s3.amazonaws.com/rebar3/rebar3
+REBAR3_URL=https://s3.amazonaws.com/rebar3/rebar3
 
 ifeq ($(wildcard rebar3),rebar3)
-  REBAR = $(CURDIR)/rebar3
+  REBAR3 = $(CURDIR)/rebar3
 endif
 
 # Fallback to rebar on PATH
-REBAR ?= $(shell which rebar3)
+REBAR3 ?= $(shell which rebar3)
 
 # And finally, prep to download rebar if all else fails
-ifeq ($(REBAR),)
-REBAR = rebar3
+ifeq ($(REBAR3),)
+REBAR3 = rebar3
 endif
 
 all: compile
@@ -18,21 +18,18 @@ get-deps:
 	./c_src/build_deps.sh get-deps
 
 deps:
-	$(REBAR) get-deps
+	$(REBAR3) get-deps
 
 rm-deps:
 	./c_src/build_deps.sh rm-deps
 
 compile: deps
-	$(REBAR) compile
+	$(REBAR3) compile
 
 clean:
-	$(REBAR) clean
+	$(REBAR3) clean
 
-test:
-	$(REBAR) eunit
-
-$(REBAR):
+$(REBAR3):
 	curl -Lo rebar3 $(REBAR_URL) || wget $(REBAR_URL)
 	chmod a+x rebar3
 
