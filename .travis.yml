@@ -38,11 +38,11 @@ jobs:
       env: OTP_VERSION=22.0
 
 install:
-   - if [ $TRAVIS_OS_NAME == osx ] ; then brew install kerl || true ; fi
-   - if [ $TRAVIS_OS_NAME == osx ] ; then kerl update releases ; fi
-   - if [ $TRAVIS_OS_NAME == osx ] ; then kerl list builds | grep ${OTP_VERSION} || travis_wait 45 kerl build ${OTP_VERSION} ${OTP_VERSION} ; fi
-   - if [ $TRAVIS_OS_NAME == osx ] ; then kerl list installations | grep install_${OTP_VERSION} || kerl install ${OTP_VERSION} install_${OTP_VERSION} ; fi
-   # - if [ $TRAVIS_OS_NAME == osx ] ; then source $(kerl path install_${OTP_VERSION})/activate ; fi
+  - if [ $TRAVIS_OS_NAME == osx ] ; then brew install kerl || true ; fi
+  - if [ $TRAVIS_OS_NAME == osx ] ; then kerl update releases ; fi
+  - if [ $TRAVIS_OS_NAME == osx ] ; then kerl list builds | grep ${OTP_VERSION} || travis_wait 45 kerl build ${OTP_VERSION} ${OTP_VERSION} ; fi
+  - if [ $TRAVIS_OS_NAME == osx ] ; then kerl list installations | grep install_${OTP_VERSION} || kerl install ${OTP_VERSION} install_${OTP_VERSION} ; fi
+  # - if [ $TRAVIS_OS_NAME == osx ] ; then source $(kerl path install_${OTP_VERSION})/activate ; fi
   - wget https://s3.amazonaws.com/rebar3/rebar3 && chmod u+x rebar3
   - ./rebar3 update
 
