@@ -1,7 +1,5 @@
 language: erlang
 
-- PATH=$HOME/.cache/rebar3/bin/:$PATH
-
 addons:
   apt:
     packages:
@@ -45,10 +43,7 @@ install:
    - if [ $TRAVIS_OS_NAME == osx ] ; then kerl list builds | grep ${OTP_VERSION} || travis_wait 45 kerl build ${OTP_VERSION} ${OTP_VERSION} ; fi
    - if [ $TRAVIS_OS_NAME == osx ] ; then kerl list installations | grep install_${OTP_VERSION} || kerl install ${OTP_VERSION} install_${OTP_VERSION} ; fi
    # - if [ $TRAVIS_OS_NAME == osx ] ; then source $(kerl path install_${OTP_VERSION})/activate ; fi
-
-before_script:
-  - curl -O -L https://s3.amazonaws.com/rebar3/rebar3
-  - chmod +x rebar3
+  - wget https://s3.amazonaws.com/rebar3/rebar3 && chmod u+x rebar3
   - ./rebar3 update
 
-script: make test
+script: REBAR=./rebar3 make test
