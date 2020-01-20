@@ -1,4 +1,5 @@
 language: erlang
+
 addons:
   apt:
     packages:
@@ -8,14 +9,17 @@ addons:
     packages:
       - kerl
       - snappy
+
 cache:
   brew: true
   directories:
     - $HOME/.cache/rebar3
     - $HOME/.kerl
     - $HOME/.kerlrc
+
 notifications:
   disabled: true
+
 jobs:
   include:
     - os: linux
@@ -32,7 +36,8 @@ jobs:
       language: generic
       osx_image: xcode11.3
       env: OTP_VERSION=22.0
-before_install:
+
+install:
    - if [ $TRAVIS_OS_NAME == osx ] ; then brew install kerl || true ; fi
    - if [ $TRAVIS_OS_NAME == osx ] ; then kerl update releases ; fi
    - if [ $TRAVIS_OS_NAME == osx ] ; then kerl list builds | grep ${OTP_VERSION} || travis_wait 45 kerl build ${OTP_VERSION} ${OTP_VERSION} ; fi
