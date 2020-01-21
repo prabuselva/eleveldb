@@ -1,14 +1,14 @@
 compile-no-deps:
-	$(REBAR3) compile skip_deps=true
+	$(REBAR) compile skip_deps=true
 
 test: compile
-	$(REBAR3) eunit skip_deps=true
+	$(REBAR) eunit skip_deps=true
 
 docs:
-	$(REBAR3) doc skip_deps=true
+	$(REBAR) doc skip_deps=true
 
 xref: compile
-	$(REBAR3) xref skip_deps=true
+	$(REBAR) xref skip_deps=true
 
 PLT ?= $(HOME)/.combo_dialyzer_plt
 LOCAL_PLT = .local_dialyzer_plt
