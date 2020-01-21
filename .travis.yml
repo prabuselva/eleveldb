@@ -47,7 +47,7 @@ install:
   - if [ $TRAVIS_OS_NAME == osx ] ; then kerl list installs | grep ${OTP_VERSION} || kerl install ${OTP_VERSION} ; fi
 
 before_script:
-  - if [ $TRAVIS_OS_NAME == osx ] ; then  . ${KERL_DEFAULT_INSTALL_DIR}/{OTP_VERSION}/activate ; fi
+  - if [ $TRAVIS_OS_NAME == osx ] ; then  . ${KERL_DEFAULT_INSTALL_DIR}/${OTP_VERSION}/activate ; fi
   - wget https://s3.amazonaws.com/rebar3/rebar3 && chmod u+x rebar3
   - ./rebar3 update
 
