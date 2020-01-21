@@ -2,7 +2,7 @@ language: erlang
 
 env:
   global:
-    - KERL_DEFAULT_INSTALL_DIR="$HOME/.kerl/installs"
+    - KERL_DEFAULT_INSTALL_DIR="$HOME/.kerl"
 
 addons:
   apt:
@@ -44,10 +44,10 @@ jobs:
 install:
   - if [ $TRAVIS_OS_NAME == osx ] ; then kerl update releases ; fi
   - if [ $TRAVIS_OS_NAME == osx ] ; then kerl list builds | grep ${OTP_VERSION} || travis_wait 45 kerl build ${OTP_VERSION} ${OTP_VERSION} ; fi
-  - if [ $TRAVIS_OS_NAME == osx ] ; then kerl install ${OTP_VERSION} ; fi
+  - if [ $TRAVIS_OS_NAME == osx ] ; then then kerl list installs | grep ${OTP_VERSION} || kerl install ${OTP_VERSION} ; fi
 
 before_script:
-  - if [ $TRAVIS_OS_NAME == osx ] ; then ls -al $HOME/.kerl/installs/${OTP_VERSION} ; fi
+  - if [ $TRAVIS_OS_NAME == osx ] ; then  . ${KERL_DEFAULT_INSTALL_DIR}/{OTP_VERSION}/activate ; fi
   - wget https://s3.amazonaws.com/rebar3/rebar3 && chmod u+x rebar3
   - ./rebar3 update
 
