@@ -41,7 +41,7 @@ basic_schema_test2() ->
     cuttlefish_unit:assert_not_configured(Config, "riak_kv.multi_backend"),
     ok.
 
-verride_schema_test_() ->
+override_schema_test_() ->
     {timeout, 60, fun override_schema_test2/0}.
 
 override_schema_test2() ->
