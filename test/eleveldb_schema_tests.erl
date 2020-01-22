@@ -1,24 +1,18 @@
 -module(eleveldb_schema_tests).
 
-%%
-%% The following 2 lines are only activated during CI
-%%  unit tests.  The script executes the following:
-%%
-%%    sed -i -e 's/% #!sed //' rebar.config test/eleveldb_schema_tests.erl
-%%
-% #!sed -include_lib("eunit/include/eunit.hrl").
-% #!sed -compile(export_all).
-
--compile(nowarn_unused_function).
-
+-include_lib("eunit/include/eunit.hrl").
+-compile([export_all, nowarn_export_all]).
 
 %% basic schema test will check to make sure that all defaults from
 %% the schema make it into the generated app.config
-basic_schema_test() ->
+basic_schema_test_() ->
+    {timeout, 60, fun basic_schema_test2/0}.
+
+basic_schema_test2() ->
     %% The defaults are defined in ../priv/eleveldb.schema.
     %% it is the file under test.
     Config = cuttlefish_unit:generate_templated_config(
-        ["../priv/eleveldb.schema"], [], context(), predefined_schema()),
+        "priv/eleveldb.schema", [], context(), predefined_schema()),
 
     cuttlefish_unit:assert_config(Config, "eleveldb.data_root", "./data/leveldb"),
     cuttlefish_unit:assert_config(Config, "eleveldb.total_leveldb_mem_percent", 70),
@@ -47,7 +41,10 @@ basic_schema_test() ->
     cuttlefish_unit:assert_not_configured(Config, "riak_kv.multi_backend"),
     ok.
 
-override_schema_test() ->
+verride_schema_test_() ->
+    {timeout, 60, fun override_schema_test2/0}.
+
+override_schema_test2() ->
     %% Conf represents the riak.conf file that would be read in by cuttlefish.
     %% this proplists is what would be output by the conf_parse module
     Conf = [
@@ -75,7 +72,7 @@ override_schema_test() ->
     %% The defaults are defined in ../priv/eleveldb.schema.
     %% it is the file under test.
     Config = cuttlefish_unit:generate_templated_config(
-        ["../priv/eleveldb.schema"], Conf, context(), predefined_schema()),
+        "priv/eleveldb.schema", Conf, context(), predefined_schema()),
 
     cuttlefish_unit:assert_config(Config, "eleveldb.data_root", "/some/crazy/dir"),
     cuttlefish_unit:assert_config(Config, "eleveldb.total_leveldb_mem_percent", 50),
@@ -104,13 +101,16 @@ override_schema_test() ->
     cuttlefish_unit:assert_not_configured(Config, "riak_kv.multi_backend"),
     ok.
 
-multi_backend_test() ->
+multi_backend_test_() ->
+    {timeout, 60, fun multi_backend_test2/0}.
+
+multi_backend_test2() ->
     Conf = [
             {["multi_backend", "default", "storage_backend"], leveldb},
             {["multi_backend", "default", "leveldb", "data_root"], "/data/default_leveldb"}
            ],
     Config = cuttlefish_unit:generate_templated_config(
-               ["../priv/eleveldb.schema", "../priv/eleveldb_multi.schema", "../test/multi_backend.schema"],
+               ["priv/eleveldb.schema", "priv/eleveldb_multi.schema", "test/multi_backend.schema"],
                Conf, context(), predefined_schema()),
 
     MultiBackendConfig = proplists:get_value(multi_backend, proplists:get_value(riak_kv, Config)),
