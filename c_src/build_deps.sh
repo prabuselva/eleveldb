@@ -71,10 +71,6 @@ case "$1" in
             (cd leveldb && git checkout $LEVELDB_VSN)
         fi
 
-        # hack issue where high level make is running -j 4
-        #  and causes build errors in leveldb
-        export MAKEFLAGS=
-
         (cd leveldb && $MAKE -j 3 all)
 
         ;;
