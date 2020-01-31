@@ -8,9 +8,7 @@ if [ `uname -s` = 'SunOS' -a "${POSIX_SHELL}" != "true" ]; then
 fi
 unset POSIX_SHELL # clear it so if we invoke other scripts, they run as ksh as well
 
-LEVELDB_VSN="2.0.23"
-
-SNAPPY_VSN="1.0.4"
+LEVELDB_VSN="2.0.35"
 
 set -e
 
@@ -32,11 +30,11 @@ MAKE=${MAKE:-make}
 
 case "$1" in
     rm-deps)
-        rm -rf leveldb system snappy-$SNAPPY_VSN
+        rm -rf leveldb system
         ;;
 
     clean)
-        rm -rf system snappy-$SNAPPY_VSN
+        rm -rf system
         if [ -d leveldb ]; then
             (cd leveldb && $MAKE clean)
         fi
@@ -60,24 +58,20 @@ case "$1" in
         ;;
 
     *)
-        if [ ! -d snappy-$SNAPPY_VSN ]; then
-            tar -xzf snappy-$SNAPPY_VSN.tar.gz
-            (cd snappy-$SNAPPY_VSN && ./configure --prefix=$BASEDIR/system --libdir=$BASEDIR/system/lib --with-pic)
-        fi
-
-        (cd snappy-$SNAPPY_VSN && $MAKE && $MAKE install)
+        export MACOSX_DEPLOYMENT_TARGET=10.8
 
         export CFLAGS="$CFLAGS -I $BASEDIR/system/include"
         export CXXFLAGS="$CXXFLAGS -I $BASEDIR/system/include"
         export LDFLAGS="$LDFLAGS -L$BASEDIR/system/lib"
         export LD_LIBRARY_PATH="$BASEDIR/system/lib:$LD_LIBRARY_PATH"
+        export LEVELDB_VSN="$LEVELDB_VSN"
 
         if [ ! -d leveldb ]; then
             git clone git://github.com/basho/leveldb
             (cd leveldb && git checkout $LEVELDB_VSN)
         fi
 
-        (cd leveldb && $MAKE all)
+        (cd leveldb && $MAKE -j 3 all)
 
         ;;
 esac
