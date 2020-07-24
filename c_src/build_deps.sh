@@ -56,7 +56,8 @@ case "$1" in
             (cd leveldb && git checkout $LEVELDB_VSN && \
                     curl -fSL https://patch-diff.githubusercontent.com/raw/basho/leveldb/pull/238.diff -o 238.diff && \
                     patch -p1 -i 238.diff && \
-                    rm -rf 238.diff)
+                    rm -rf 238.diff && \
+                    patch port/atomic_pointer.h ../patches/leveldb/atomic_pointer.patch)
         fi
         ;;
 
@@ -74,7 +75,8 @@ case "$1" in
             (cd leveldb && git checkout $LEVELDB_VSN && \
                     curl -fSL https://patch-diff.githubusercontent.com/raw/basho/leveldb/pull/238.diff -o 238.diff && \
                     patch -p1 -i 238.diff && \
-                    rm -rf 238.diff)
+                    rm -rf 238.diff && \
+                    patch port/atomic_pointer.h ../patches/leveldb/atomic_pointer.patch)
         fi
 
         (cd leveldb && $MAKE -j 3 all)

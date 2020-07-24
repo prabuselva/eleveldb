@@ -1,0 +1,33 @@
+--- atomic_pointer.h.new	2020-07-24 11:12:29.474738936 +0200
++++ _build/default/lib/eleveldb/c_src/leveldb/port/atomic_pointer.h	2020-07-24 10:45:36.452198646 +0200
+@@ -36,8 +36,6 @@
+ #define ARCH_CPU_X86_FAMILY 1
+ #elif defined(__ARMEL__)
+ #define ARCH_CPU_ARM_FAMILY 1
+-#elif defined(__aarch64__)
+-#define ARCH_CPU_ARM64_FAMILY 1
+ #elif defined(__powerpc64__) && defined(__LITTLE_ENDIAN__)
+ #define ARCH_CPU_PPC64LE_FAMILY 1
+ #endif
+@@ -104,13 +102,6 @@
+ }
+ #define LEVELDB_HAVE_MEMORY_BARRIER
+ 
+-// ARM64
+-#elif defined(ARCH_CPU_ARM64_FAMILY)
+-inline void MemoryBarrier() {
+-  asm volatile("dmb sy" : : : "memory");
+-}
+-#define LEVELDB_HAVE_MEMORY_BARRIER
+-
+ #endif
+ 
+ // AtomicPointer built using platform-specific MemoryBarrier()
+@@ -167,7 +158,6 @@
+ #undef LEVELDB_HAVE_MEMORY_BARRIER
+ #undef ARCH_CPU_X86_FAMILY
+ #undef ARCH_CPU_ARM_FAMILY
+-#undef ARCH_CPU_ARM64_FAMILY
+ #undef ARCH_CPU_PPC64LE_FAMILY
+ 
+ }  // namespace port
